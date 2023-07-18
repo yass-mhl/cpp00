@@ -6,7 +6,7 @@
 /*   By: ymehlil <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 16:30:05 by ymehlil           #+#    #+#             */
-/*   Updated: 2023/07/18 12:59:40 by ymehlil          ###   ########.fr       */
+/*   Updated: 2023/07/18 15:37:05 by ymehlil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 #include <iostream>
 #include <string>
 #include <stdlib.h>
+#include <limits>
+#include <sstream>
 
 void	swipe_contact(PhoneBook& phonebook, Contact& contact)
 {
@@ -137,12 +139,12 @@ int search_contact(PhoneBook& phonebook)
 			i++;
 		}
 		std::cout << "Please enter the index of the contact you want to see : " << std::endl;
-		std::cin >> index;
+		std::getline(std::cin, input);
 		if (std::cin.eof())
 			return (-1);
-		else if (std::cin.fail())
+		std::istringstream ss(input);
+		if (!(ss >> index) || !ss.eof() || index < 0 || index >= phonebook.get_nb_contact())
 		{
-			std::cin.clear();
 			std::cout << "Invalid index" << std::endl;
 			return (0);
 		}
@@ -169,31 +171,33 @@ static void print_menu(void)
 	std::cout << "SEARCH : Search a contact" << std::endl;
 	std::cout << "EXIT : Exit the program" << std::endl;
 	std::cout << "---------------------------------------------" << std::endl;
-	
+	std::cout << "> ";
 }
 
 static int menu(PhoneBook& phonebook)
 {
 	std::string input;
 	
-	print_menu();
-	std::getline(std::cin, input);
-	if (std::cin.eof())
-		return (std::cout << "Bye !" << std::endl, -1);
-	while (input == "")
+	while (true)
+	{	
+		print_menu();
 		std::getline(std::cin, input);
-	if (input == "ADD")
-		add_contact(phonebook);
-	else if (input == "SEARCH")
-	{
-		if (search_contact(phonebook) == -1)
+		if (std::cin.eof())
 			return (std::cout << "Bye !" << std::endl, -1);
+		while (input == "")
+			std::getline(std::cin, input);
+		if (input == "ADD")
+			add_contact(phonebook);
+		else if (input == "SEARCH")
+		{
+			if (search_contact(phonebook) == -1)
+				return (std::cout << "Bye !" << std::endl, -1);
+		}
+		else if (input == "EXIT")
+			return (std::cout << "Bye !" << std::endl, -1);
+		else
+			std::cout << "Invalid command" << std::endl;
 	}
-	else if (input == "EXIT")
-		return (std::cout << "Bye !" << std::endl, -1);
-	else
-		std::cout << "Invalid command" << std::endl;
-	menu(phonebook);
 	return (0);
 }
 

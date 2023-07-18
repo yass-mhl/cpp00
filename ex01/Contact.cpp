@@ -6,7 +6,7 @@
 /*   By: ymehlil <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/02 11:36:23 by ymehlil           #+#    #+#             */
-/*   Updated: 2023/06/27 14:50:41 by ymehlil          ###   ########.fr       */
+/*   Updated: 2023/07/12 15:15:45 by ymehlil          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ std::string Contact::get_info(std::string info) const {
         return this->nickname;
     else if (info == "phone_number")
         return this->phone_number;
-    else if (info == "darkest_number")
+    else if (info == "darkest_secret")
         return this->darkest_secret;
     return NULL;
 }
@@ -48,6 +48,6 @@ void Contact::set_info(std::string info, std::string str) {
         this->nickname = str;    
     else if (info == "phone_number")
         this->phone_number = str;
-    else if (info == "darkest_number")
+    else if (info == "darkest_secret")
         this->darkest_secret = str;
 }
